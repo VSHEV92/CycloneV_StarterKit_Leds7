@@ -11,6 +11,8 @@ module top_tb();
 
 	logic clk = 0;
 	logic resetn = 0;
+ 	logic [6:0] leds_data[4];
+	logic led_data_valid[4];
 
 	// uart интерфейс
 	UART_intf
@@ -28,13 +30,21 @@ module top_tb();
 	)
 	test_program(.*);
 
+	// тестируемый модуль
+	device_top
+	#(
+	  	.CLK_FREQ(CLK_FREQ),
+    	.BIT_RATE(BIT_RATE)
+	)
+	DUT (.*);
+
 	// сигнал сброса
 	initial
 		#RESET_DEASSIGN resetn = 1;
 
 	// тактовый сигнал 
 	initial
-		forever #(1e3 / CLK_FREQ) clk = ~ clk;
+		forever #(1e3 / CLK_FREQ / 2) clk = ~ clk;
 
 	// завершение по тайм-ауту
 	initial begin

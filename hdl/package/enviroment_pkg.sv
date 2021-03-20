@@ -116,6 +116,34 @@ class Driver;
 endclass : Driver
 
 // ------------------------
+// ------- монитор --------
+// ------------------------
+class Monitor;
+	mailbox sc_board_mb;
+	logic [6:0] leds_data[4];
+	logic led_data_valid[4];
+	
+	function new(ref mailbox sc_board_mb, ref logic [6:0] leds_data[4], ref logic led_data_valid[4]);
+		this.sc_board_mb = sc_board_mb;
+		this.leds_data = leds_data;
+		this.led_data_valid = led_data_valid;
+	endfunction
+
+    task get_transaction();
+    	@(posedge led_data_valid.or());
+    	for (int i = 0; i < 4; i++)
+    		if (led_data_valid[i])
+    			sc_board_mb.put(leds_data[i]);
+    endtask
+
+    task run();
+    	forever get_transaction();
+    endtask
+
+endclass : Monitor
+
+
+// ------------------------
 // ----- окружение --------
 // ------------------------
 class Enviroment;
@@ -124,12 +152,14 @@ class Enviroment;
 
 	virtual UART_intf Uart_RX;	
 	mailbox driver_mb;
-	mailbox sc_board_mb;
+	mailbox sc_board_d_mb;
+	mailbox sc_board_m_mb;
 
-	function new(int unsigned max_delay);
+	function new(int unsigned max_delay, ref logic [6:0] leds_data[4], ref logic led_data_valid[4]);
 		driver_mb = new();
-		sc_board_mb = new();
-		gen = new(sc_board_mb, driver_mb, max_delay);
+		sc_board_d_mb = new();
+		sc_board_m_mb = new();
+		gen = new(sc_board_d_mb, driver_mb, max_delay);
 		driver = new(driver_mb);
 	endfunction
 
