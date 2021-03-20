@@ -1,0 +1,10 @@
+*
+!.gitignore
+
+!hdl
+!hdl/package
+!hdl/package/*.sv
+!hdl/source
+!hdl/source/*.sv
+!hdl/testbench
+!hdl/testbench/*.sv
