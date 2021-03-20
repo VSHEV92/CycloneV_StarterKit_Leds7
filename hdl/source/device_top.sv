@@ -8,8 +8,7 @@ module device_top
 	input logic clk,
 	input logic resetn,
 	UART_intf.device uart_rx,
-	output logic [6:0] leds_data[4],
-	output logic led_data_valid[4]
+	Leds_intf.device leds
 );
 
 logic [2:0] debounced_resetn;

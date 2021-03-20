@@ -11,17 +11,16 @@ module top_tb();
 
 	logic clk = 0;
 	logic resetn = 0;
- 	logic [6:0] leds_data[4];
-	logic led_data_valid[4];
-
-	// uart интерфейс
+ 	
+	// интерфейсы
 	UART_intf
 	#(
 		.BIT_RATE(BIT_RATE)
 	) uart_rx (
 		.aresetn(resetn)
 	);
-	
+	Leds_intf leds();
+
 	// программа для тестов
 	test
 	#(

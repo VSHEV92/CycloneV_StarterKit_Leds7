@@ -31,8 +31,16 @@ class Transactions;
 		return leds7;
 	endfunction
 
+	function void set_led7(Leds_7_pkg::leds7_t leds7);
+		this.leds7 = leds7;
+	endfunction
+
 	function bit [3:0] get_value();
 		return value;
+	endfunction
+
+	function void set_value(bit [3:0] value);
+		this.value = value;
 	endfunction
 
 	function int unsigned get_delay();
@@ -119,21 +127,34 @@ endclass : Driver
 // ------- монитор --------
 // ------------------------
 class Monitor;
+	Enviroment_pkg::Transactions trans;
 	mailbox sc_board_mb;
-	logic [6:0] leds_data[4];
-	logic led_data_valid[4];
-	
-	function new(ref mailbox sc_board_mb, ref logic [6:0] leds_data[4], ref logic led_data_valid[4]);
+	virtual Leds_intf Leds_Interface;
+
+	function new(ref mailbox sc_board_mb);
 		this.sc_board_mb = sc_board_mb;
-		this.leds_data = leds_data;
-		this.led_data_valid = led_data_valid;
 	endfunction
 
     task get_transaction();
-    	@(posedge led_data_valid.or());
+    	int led_numb;
+    	logic [3:0] bin_data;
+    	trans = new();
+    	
+    	@(posedge Leds_Interface.led_data_valid[0], posedge Leds_Interface.led_data_valid[1], posedge Leds_Interface.led_data_valid[2], posedge Leds_Interface.led_data_valid[3]);
     	for (int i = 0; i < 4; i++)
-    		if (led_data_valid[i])
-    			sc_board_mb.put(leds_data[i]);
+    		if (Leds_Interface.led_data_valid[i])
+    			led_numb = i;
+
+    	bin_data = Leds_7_pkg::led7_to_bin(~Leds_Interface.leds_data[led_numb]);
+    	
+    	trans.set_value(bin_data);
+    	unique case (led_numb)
+	    	0: trans.set_led7(Leds_7_pkg::LED0);
+	    	1: trans.set_led7(Leds_7_pkg::LED1);
+	    	2: trans.set_led7(Leds_7_pkg::LED2);
+	    	3: trans.set_led7(Leds_7_pkg::LED3);
+    	endcase
+    	sc_board_mb.put(trans);
     endtask
 
     task run();
@@ -142,33 +163,88 @@ class Monitor;
 
 endclass : Monitor
 
+// --------------------------------
+// ------- результат теста --------
+// --------------------------------
+class Scoreboard;
+	bit Test_Result = 1;
+	Enviroment_pkg::Transactions trans_d;
+	Enviroment_pkg::Transactions trans_m;
 
+	mailbox sc_board_d_mb;
+	mailbox sc_board_m_mb;
+
+	function new(ref mailbox sc_board_m_mb, ref mailbox sc_board_d_mb);
+		trans_m = new();
+		trans_d = new();
+		this.sc_board_m_mb = sc_board_m_mb;
+		this.sc_board_d_mb = sc_board_d_mb;
+	endfunction
+
+	task run(input int runs_number);
+		for (int i = 0; i < runs_number; i++) begin
+			sc_board_m_mb.get(trans_m);
+			sc_board_d_mb.get(trans_d);
+
+			if (trans_m.get_led7() != trans_d.get_led7()) begin 
+				$display("Error! LED not match! Transaction number = %d", i);
+				Test_Result = 0;
+			end
+
+			if (trans_m.get_value() != trans_d.get_value()) begin 
+				$display("Error! VALUE not match! Transaction number = %d", i);
+				Test_Result = 0;
+			end
+		end
+
+		if (Test_Result) begin 
+			$display("---------------------------");
+			$display("-------  TEST PASS  -------");
+			$display("---------------------------");
+		end
+		else begin 
+			$display("---------------------------");
+			$display("-------  TEST FAIL  -------");
+			$display("---------------------------");
+		end
+		$stop;
+	endtask
+
+endclass : Scoreboard
 // ------------------------
 // ----- окружение --------
 // ------------------------
 class Enviroment;
 	Enviroment_pkg::Generator gen;
 	Enviroment_pkg::Driver driver;
+	Enviroment_pkg::Monitor mon;
+	Enviroment_pkg::Scoreboard score;
 
-	virtual UART_intf Uart_RX;	
+	virtual UART_intf Uart_RX;
+	virtual Leds_intf Leds_Interface;	
+
 	mailbox driver_mb;
 	mailbox sc_board_d_mb;
 	mailbox sc_board_m_mb;
 
-	function new(int unsigned max_delay, ref logic [6:0] leds_data[4], ref logic led_data_valid[4]);
+	function new(int unsigned max_delay);
 		driver_mb = new();
 		sc_board_d_mb = new();
 		sc_board_m_mb = new();
 		gen = new(sc_board_d_mb, driver_mb, max_delay);
 		driver = new(driver_mb);
+		mon = new(sc_board_m_mb);
+		score = new(sc_board_m_mb, sc_board_d_mb);
 	endfunction
 
 	task run(input int runs_number);
 		driver.Uart_RX = Uart_RX;
-
+		mon.Leds_Interface = Leds_Interface;
 		fork
 			gen.run(runs_number);
 			driver.run();
+			mon.run();
+			score.run(runs_number);
 		join
 	endtask
 

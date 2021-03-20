@@ -25,7 +25,7 @@ package Leds_7_pkg;
 	// проеобразование кода семисегментного индикатора в двоичный код
 	function logic[3:0] led7_to_bin(logic[6:0] leds_data);
 		logic[6:0] bin_data;
-		unique case (bin_data)
+		unique case (leds_data)
 		//     abcdefg
 			7'b1111110: bin_data = 0;
 			7'b0110000: bin_data = 1;

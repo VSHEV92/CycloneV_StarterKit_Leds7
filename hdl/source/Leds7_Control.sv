@@ -4,8 +4,7 @@ module Leds7_Control (
 	input logic resetn, 
 	input logic [7:0] uart_data,
 	input logic uart_data_valid,
-	output logic [6:0] leds_data[4],
-	output logic led_data_valid[4]
+	Leds_intf.device leds
 );
 
 enum {LED_NUMB, LED0_DATA, LED1_DATA, LED2_DATA, LED3_DATA} fsm_state;
@@ -47,22 +46,22 @@ always_ff @(posedge clk)
 always_ff @(posedge clk)
 	if(~resetn)
 		for (int i = 0; i < 4; i++)
-			led_data_valid[i] <= 0;
+			leds.led_data_valid[i] <= 0;
 	else begin
 		for (int i = 0; i < 4; i++)
-			led_data_valid[i] <= 0;
+			leds.led_data_valid[i] <= 0;
 	 	if(uart_data_valid) 
 			case(fsm_state)
-				LED0_DATA: led_data_valid[0] <= 1;
-				LED1_DATA: led_data_valid[1] <= 1;
-				LED2_DATA: led_data_valid[2] <= 1;
-				LED3_DATA: led_data_valid[3] <= 1;
+				LED0_DATA: leds.led_data_valid[0] <= 1;
+				LED1_DATA: leds.led_data_valid[1] <= 1;
+				LED2_DATA: leds.led_data_valid[2] <= 1;
+				LED3_DATA: leds.led_data_valid[3] <= 1;
 			endcase
 	end
 
 // преобразование в код семисегментного индикатора
 always_comb
 	for (int i = 0; i < 4; i++) 
-		leds_data[i] = ~(Leds_7_pkg::bin_to_led7(leds_bin_data[i]));
+		leds.leds_data[i] = ~(Leds_7_pkg::bin_to_led7(leds_bin_data[i]));
 
 endmodule
