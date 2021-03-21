@@ -10,7 +10,7 @@
 !hdl/testbench/*.sv
 
 !CycloneV_StarterKit_Leds7_Project
-!CycloneV_StarterKit_Leds7_Project/.qpf
-!CycloneV_StarterKit_Leds7_Project/.qsf
-!CycloneV_StarterKit_Leds7_Project/.qws
+!CycloneV_StarterKit_Leds7_Project/*.qpf
+!CycloneV_StarterKit_Leds7_Project/*.qsf
+!CycloneV_StarterKit_Leds7_Project/*.qws
 

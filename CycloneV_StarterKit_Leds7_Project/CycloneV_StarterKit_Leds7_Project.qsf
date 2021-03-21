@@ -1,0 +1,123 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2020  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 20.1.0 Build 711 06/05/2020 SJ Standard Edition
+# Date created = 07:17:58  March 21, 2021
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		CycloneV_StarterKit_Leds7_Project_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CGXFC5C6F27C7
+set_global_assignment -name TOP_LEVEL_ENTITY device_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "07:17:58  MARCH 21, 2021"
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Standard Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/source/UART_RX_to_AXIS.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/source/Leds7_Control.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/package/uart_intf.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/package/leds_intf.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/package/Leds_7_pkg.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../hdl/source/device_top.sv
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_H12 -to clk
+set_instance_assignment -name IO_STANDARD "2.5 V" -to clk
+set_location_assignment PIN_Y18 -to leds.leds_data[0][0]
+set_location_assignment PIN_Y19 -to leds.leds_data[0][1]
+set_location_assignment PIN_Y20 -to leds.leds_data[0][2]
+set_location_assignment PIN_W18 -to leds.leds_data[0][3]
+set_location_assignment PIN_V17 -to leds.leds_data[0][4]
+set_location_assignment PIN_V18 -to leds.leds_data[0][5]
+set_location_assignment PIN_V19 -to leds.leds_data[0][6]
+set_location_assignment PIN_AF24 -to leds.leds_data[1][0]
+set_location_assignment PIN_AC19 -to leds.leds_data[1][1]
+set_location_assignment PIN_AE25 -to leds.leds_data[1][2]
+set_location_assignment PIN_AE26 -to leds.leds_data[1][3]
+set_location_assignment PIN_AB19 -to leds.leds_data[1][4]
+set_location_assignment PIN_AD26 -to leds.leds_data[1][5]
+set_location_assignment PIN_AA18 -to leds.leds_data[1][6]
+set_location_assignment PIN_W20 -to leds.leds_data[2][0]
+set_location_assignment PIN_W21 -to leds.leds_data[2][1]
+set_location_assignment PIN_V20 -to leds.leds_data[2][2]
+set_location_assignment PIN_V22 -to leds.leds_data[2][3]
+set_location_assignment PIN_U20 -to leds.leds_data[2][4]
+set_location_assignment PIN_AD6 -to leds.leds_data[2][5]
+set_location_assignment PIN_AD7 -to leds.leds_data[2][6]
+set_location_assignment PIN_AC22 -to leds.leds_data[3][0]
+set_location_assignment PIN_AC23 -to leds.leds_data[3][1]
+set_location_assignment PIN_AC24 -to leds.leds_data[3][2]
+set_location_assignment PIN_AA22 -to leds.leds_data[3][3]
+set_location_assignment PIN_AA23 -to leds.leds_data[3][4]
+set_location_assignment PIN_Y23 -to leds.leds_data[3][5]
+set_location_assignment PIN_Y24 -to leds.leds_data[3][6]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][0]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][1]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][2]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][3]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][4]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][5]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[0][6]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][0]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][1]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][2]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][3]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][4]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][5]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to leds.leds_data[1][6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[2][6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds.leds_data[3][6]
+set_location_assignment PIN_P11 -to resetn
+set_instance_assignment -name IO_STANDARD "1.2 V" -to resetn
+set_location_assignment PIN_M9 -to uart_rx.RX
+set_instance_assignment -name IO_STANDARD "2.5 V" -to uart_rx.RX
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
