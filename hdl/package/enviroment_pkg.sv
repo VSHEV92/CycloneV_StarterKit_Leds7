@@ -13,7 +13,9 @@ class Transactions;
 
 	covergroup transaction_cg();
 	   	leds7: coverpoint leds7;
-	   	value: coverpoint value;
+	   	value: coverpoint value {
+	   		ignore_bins value_10_to_15 = {[10:15]};
+	   	}
 	   	all: cross leds7, value; 
 	endgroup : transaction_cg
 

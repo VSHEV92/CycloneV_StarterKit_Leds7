@@ -31,13 +31,13 @@ UART_RX_to_AXIS
 uart_inst
 (
     .aclk(clk), 
-    .aresetn(resetn),
+    .aresetn(debounced_resetn[2]),
     .tdata(uart_data),
 	.tvalid(uart_data_valid),
     .RX(uart_rx.RX)    
 );
 
 // управление светодиодами
-Leds7_Control Leds7_Control_inst(.*);
+Leds7_Control Leds7_Control_inst(.*, .resetn(debounced_resetn[2]));
 
 endmodule

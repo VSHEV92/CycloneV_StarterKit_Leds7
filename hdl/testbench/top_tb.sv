@@ -4,9 +4,9 @@ module top_tb();
 
 	parameter CLK_FREQ = 50;         // тактовая частота в МГц
 	parameter RESET_DEASSIGN = 300;  // неативаный уровень стброса в нс 
-	parameter SIM_TIMEOUT = 100;       // завершение симуляции по тайм-ауту
+	parameter SIM_TIMEOUT = 1000;       // завершение симуляции по тайм-ауту
 	parameter BIT_RATE = 115200;     // скорость данных в бит/с
-	parameter TRANS_NUMB = 10;        // количество транзакций
+	parameter TRANS_NUMB = 1000;        // количество транзакций
 	parameter MAX_DELAY = 30;       // максимальная задержка в периодах бита данных 
 
 	logic clk = 0;
