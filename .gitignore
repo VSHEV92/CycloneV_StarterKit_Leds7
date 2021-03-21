@@ -14,3 +14,6 @@
 !CycloneV_StarterKit_Leds7_Project/*.qsf
 !CycloneV_StarterKit_Leds7_Project/*.qws
 !CycloneV_StarterKit_Leds7_Project/*.sdc
+
+!CycloneV_Leds_GUI
+!CycloneV_Leds_GUI/*
