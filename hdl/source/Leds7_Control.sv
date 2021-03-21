@@ -1,4 +1,6 @@
 // модуля управления семисегментными индикаторами
+//`define TEST
+
 module Leds7_Control (
 	input logic clk,    
 	input logic resetn, 
@@ -67,31 +69,32 @@ always_comb
 
 
 // ------------------------------------------------------------------------------------------------------
+`ifdef TEST
 property led_value_in_LED_NUMB_state;
 	@(posedge clk) disable iff (~resetn)
 		(fsm_state == LED_NUMB) & uart_data_valid |-> (uart_data == 8'hF0) | (uart_data == 8'hF1) | (uart_data == 8'hF2) | (uart_data == 8'hF3);
-endproperty;
+endproperty
 assert property (led_value_in_LED_NUMB_state);
 cover property (led_value_in_LED_NUMB_state);
 
 property led_value_in_other_state;
 	@(posedge clk) disable iff (~resetn)
 		(fsm_state != LED_NUMB) & uart_data_valid |-> uart_data inside {[0:9]};
-endproperty;
+endproperty
 assert property (led_value_in_other_state);
 cover property (led_value_in_other_state);
 
 property LED_NUMB_state_to_Next_State;
 	@(posedge clk) disable iff (~resetn)
 		(fsm_state == LED_NUMB) & uart_data_valid |=> (fsm_state == LED0_DATA) | (fsm_state == LED1_DATA) | (fsm_state == LED2_DATA) | (fsm_state == LED3_DATA);
-endproperty;
+endproperty
 assert property (LED_NUMB_state_to_Next_State);
 cover property (LED_NUMB_state_to_Next_State);
 
 property other_state_to_Next_State;
 	@(posedge clk) disable iff (~resetn)
 		(fsm_state != LED_NUMB) & uart_data_valid |=> (fsm_state == LED_NUMB);
-endproperty;
+endproperty
 assert property (other_state_to_Next_State);
 cover property (other_state_to_Next_State);
 
@@ -100,7 +103,7 @@ property led_number_to_valid_out_0;
 		(uart_data == 8'hF0) & uart_data_valid |=> ##2 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0) [*2:$]
 												   ##1 (leds.led_data_valid[0] == 1 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0)
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0);
-endproperty;
+endproperty
 assert property (led_number_to_valid_out_0);
 cover property (led_number_to_valid_out_0);
 
@@ -109,7 +112,7 @@ property led_number_to_valid_out_1;
 		(uart_data == 8'hF1) & uart_data_valid |=> ##2 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0) [*2:$]
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 1 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0)
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0);
-endproperty;
+endproperty
 assert property (led_number_to_valid_out_1);
 cover property (led_number_to_valid_out_1);
 
@@ -118,7 +121,7 @@ property led_number_to_valid_out_2;
 		(uart_data == 8'hF2) & uart_data_valid |=> ##2 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0) [*2:$]
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 1 & leds.led_data_valid[3] == 0)
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0);
-endproperty;
+endproperty
 assert property (led_number_to_valid_out_2);
 cover property (led_number_to_valid_out_2);
 
@@ -127,8 +130,9 @@ property led_number_to_valid_out_3;
 		(uart_data == 8'hF3) & uart_data_valid |=> ##2 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0) [*2:$]
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 1)
 												   ##1 (leds.led_data_valid[0] == 0 & leds.led_data_valid[1] == 0 & leds.led_data_valid[2] == 0 & leds.led_data_valid[3] == 0);
-endproperty;
+endproperty
 assert property (led_number_to_valid_out_3);
 cover property (led_number_to_valid_out_3);
+`endif
 
 endmodule
